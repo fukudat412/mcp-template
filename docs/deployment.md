@@ -17,7 +17,7 @@
    git push
    ```
 
-**アクセス**: `https://your-username.github.io/mcp-template/`
+**アクセス**: `https://fukudat412.github.io/mcp-template/`
 
 ## 🚀 デプロイ方法
 
