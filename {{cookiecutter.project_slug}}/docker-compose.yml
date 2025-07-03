@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  {{ cookiecutter.project_slug }}:
+    build: 
+      context: .
+      args:
+        - BUILD_DATE=${BUILD_DATE:-$(date -u +%Y-%m-%dT%H:%M:%SZ)}
+        - GIT_COMMIT=${GIT_COMMIT:-$(git rev-parse HEAD 2>/dev/null || echo "unknown")}
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - API_KEY=${API_KEY:-development-key}
+      - LOG_LEVEL=info
+      - BUILD_DATE=${BUILD_DATE:-$(date -u +%Y-%m-%dT%H:%M:%SZ)}
+      - GIT_COMMIT=${GIT_COMMIT:-$(git rev-parse HEAD 2>/dev/null || echo "unknown")}
+{% if cookiecutter.include_llm_integration == "openai" %}      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4}{% endif %}
+{% if cookiecutter.include_llm_integration == "claude" %}      - CLAUDE_API_KEY=${CLAUDE_API_KEY}
+      - CLAUDE_MODEL=${CLAUDE_MODEL:-claude-3-sonnet-20240229}{% endif %}
+{% if cookiecutter.include_database == "postgresql" %}      - DATABASE_URL=${DATABASE_URL}{% endif %}
+{% if cookiecutter.include_database == "sqlite" %}      - DATABASE_PATH=${DATABASE_PATH:-./data/{{ cookiecutter.project_slug }}.db}{% endif %}
+    {% if cookiecutter.include_database == "sqlite" %}volumes:
+      - ./data:/app/data{% endif %}
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+{% if cookiecutter.include_database == "postgresql" %}
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB={{ cookiecutter.project_slug.replace('-', '_') }}
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:{% endif %}

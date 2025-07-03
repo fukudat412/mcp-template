@@ -1,0 +1,34 @@
+title: MCP Agent Service Template
+description: MCPアーキテクチャに基づくAIエージェントサービスのテンプレート
+url: https://fukudat412.github.io
+baseurl: /mcp-template
+
+markdown: kramdown
+highlighter: rouge
+theme: minima
+
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+author:
+  name: fukudat412
+  email: your.email@example.com
+
+social_links:
+  github: fukudat412/mcp-template
+
+header_pages:
+  - setup.md
+  - api.md
+  - customization.md
+  - deployment.md
+  - contribution.md
+
+exclude:
+  - node_modules
+  - package.json
+  - package-lock.json
+  - Gemfile
+  - Gemfile.lock

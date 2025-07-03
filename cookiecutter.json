@@ -1,0 +1,18 @@
+{
+  "project_name": "My MCP Agent",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-').replace('_', '-') }}",
+  "project_description": "MCP Agent Service",
+  "agent_name": "CustomAgent",
+  "agent_class_name": "{{ cookiecutter.agent_name }}",
+  "agent_endpoint": "{{ cookiecutter.agent_name.lower().replace('agent', '') }}-process",
+  "author_name": "Your Name",
+  "author_email": "your.email@example.com",
+  "github_username": "your-username",
+  "version": "1.0.0",
+  "license": ["MIT", "Apache-2.0", "GPL-3.0", "BSD-3-Clause"],
+  "include_llm_integration": ["openai", "claude", "none"],
+  "include_database": ["postgresql", "sqlite", "none"],
+  "include_monitoring": ["y", "n"],
+  "include_examples": ["y", "n"],
+  "year": "{% now 'local', '%Y' %}"
+}
