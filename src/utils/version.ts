@@ -34,7 +34,7 @@ export const getVersionInfo = (): VersionInfo => {
   } catch (error) {
     // Fallback version info
     return {
-      version: '1.0.0',
+      version: '1.2.0',
       name: 'mcp-agent',
       description: 'MCP Agent Service',
       buildDate: new Date().toISOString(),

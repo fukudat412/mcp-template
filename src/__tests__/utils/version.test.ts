@@ -16,7 +16,7 @@ describe('Version utilities', () => {
     const version = getVersionInfo();
 
     expect(version.name).toBe('mcp-agent');
-    expect(version.version).toBe('1.0.0');
+    expect(version.version).toBe('1.2.0');
     expect(version.description).toBe('MCP Agent Service');
     expect(version.nodeVersion).toBe(process.version);
     expect(version.buildDate).toBeDefined();
@@ -50,7 +50,7 @@ describe('Version utilities', () => {
     
     const version = getVersionInfo();
 
-    expect(version.version).toBe('1.0.0');
+    expect(version.version).toBe('1.2.0');
     expect(version.name).toBe('mcp-agent');
     expect(version.gitCommit).toBe('unknown');
   });

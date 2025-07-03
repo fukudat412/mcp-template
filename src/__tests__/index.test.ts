@@ -13,7 +13,7 @@ describe('MCP Agent API', () => {
       expect(response.body).toMatchObject({
         status: 'healthy',
         agent: 'MCPAgent',
-        version: '1.0.0',
+        version: '1.2.0',
         buildDate: expect.any(String)
       });
     });

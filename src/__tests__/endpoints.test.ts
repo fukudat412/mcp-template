@@ -10,7 +10,7 @@ describe('Version endpoints', () => {
 
       expect(response.body).toMatchObject({
         name: 'mcp-agent',
-        version: '1.0.0',
+        version: '1.2.0',
         description: 'MCP Agent Service',
         nodeVersion: expect.any(String),
         buildDate: expect.any(String),
@@ -30,7 +30,7 @@ describe('Version endpoints', () => {
       expect(response.body).toMatchObject({
         status: 'healthy',
         agent: 'MCPAgent',
-        version: '1.0.0',
+        version: '1.2.0',
         buildDate: expect.any(String)
       });
     });
