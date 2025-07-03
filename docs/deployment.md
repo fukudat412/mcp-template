@@ -1,5 +1,24 @@
 # デプロイ・運用ガイド
 
+## 📖 GitHub Pages設定
+
+**ドキュメントサイトの有効化手順:**
+
+1. **リポジトリ設定**: GitHub > Settings > Pages
+2. **Source設定**: "GitHub Actions" を選択
+3. **ワークフロー実行**: 
+   ```bash
+   # 手動実行
+   gh workflow run "Deploy GitHub Pages"
+   
+   # または docs/ 変更をpush
+   git add docs/
+   git commit -m "docs: update documentation"
+   git push
+   ```
+
+**アクセス**: `https://your-username.github.io/mcp-template/`
+
 ## 🚀 デプロイ方法
 
 ### Docker Compose (推奨)
