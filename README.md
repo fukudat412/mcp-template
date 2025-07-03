@@ -1,155 +1,69 @@
-# MCP Agent Service
+# MCP Agent Service Template
 
-MCPアーキテクチャに基づくAIエージェントサービスの実装です。
+MCPアーキテクチャに基づくAIエージェントサービスのテンプレートリポジトリです。
 
-## 🚀 セットアップ
+## 🎯 概要
 
-### 必要要件
-- Node.js 18以上
-- Docker（オプション）
+**MCP (Multi-agent Control Platform)** アーキテクチャに基づくAIエージェントサービスを効率的に構築・量産するためのテンプレートです。
 
-### インストール
+### 主な特徴
+- ✅ 統一的なエージェント管理・制御
+- ✅ セッションIDによるログトレーサビリティ  
+- ✅ 再利用可能な設計パターン
+- ✅ 本番環境対応（Docker、CI/CD）
+- ✅ 24のテストケース実装済み
+
+### 技術スタック
+- **Node.js 18+** + **TypeScript** + **Express.js**
+- **Jest** (テスト) + **Winston** (ログ) + **Docker**
+
+## 🚀 クイックスタート
+
 ```bash
+# テンプレートをクローン
+git clone https://github.com/fukudat412/mcp-template.git my-mcp-agent
+cd my-mcp-agent
+
+# セットアップ
 npm install
-```
-
-### 環境設定
-```bash
 cp .env.example .env
-# .envファイルを編集してAPI_KEYを設定
-```
 
-## 🏃‍♂️ 実行方法
-
-### 開発環境
-```bash
+# 開発サーバー起動
 npm run dev
+
+# 動作確認
+curl http://localhost:3000/health
 ```
 
-### 本番環境
-```bash
-npm run build
-npm start
-```
+**他の方法:**
+- 🌟 GitHub Template機能で新規リポジトリ作成
+- 🛠️ 初期化スクリプト: `npx create-mcp-agent`
 
-### Docker使用
-```bash
-docker-compose up -d
-```
+## 📚 ドキュメント
 
-## 🧪 テスト
-```bash
-npm test
-```
+| 📖 ガイド | 📝 説明 |
+|----------|---------|
+| **[セットアップ](docs/setup.md)** | インストール・環境構築・実行方法 |
+| **[API仕様](docs/api.md)** | エンドポイント・認証・レスポンス形式 |
+| **[カスタマイズ](docs/customization.md)** | エージェント追加・LLM統合・拡張方法 |
+| **[デプロイ](docs/deployment.md)** | Docker・K8s・監視・スケーリング |
+| **[コントリビューション](docs/contribution.md)** | 貢献方法・開発ガイドライン |
 
-## 📡 API仕様
+### 設計ドキュメント
+- **[MCPテンプレート.md](MCPテンプレート.md)** - MCP設計・実装ガイド
+- **[実装指示書.md](MCPテンプレート実装指示書.md)** - 技術仕様書
+- **[CLAUDE.md](CLAUDE.md)** - Claude開発者向けガイド
 
-### ヘルスチェック
-```
-GET /health
-Response:
-{
-  "status": "healthy",
-  "agent": "MCPAgent",
-  "version": "1.0.0",
-  "buildDate": "2025-07-03T12:00:00Z"
-}
-```
+## 🤝 コントリビューション・サポート
 
-### バージョン情報
-```
-GET /version
-Response:
-{
-  "name": "mcp-agent",
-  "version": "1.0.0",
-  "description": "MCP Agent Service",
-  "buildDate": "2025-07-03T12:00:00Z",
-  "nodeVersion": "v18.19.0",
-  "gitCommit": "abc123def"
-}
-```
+- 🐛 **バグ報告**: [Issues](https://github.com/fukudat412/mcp-template/issues)
+- 💡 **機能提案**: [Discussions](https://github.com/fukudat412/mcp-template/discussions)
+- 🔧 **プルリクエスト**: [貢献ガイド](docs/contribution.md)
 
-### 処理エンドポイント
-```
-POST /process
-Headers:
-  x-api-key: your-api-key
+## 📄 ライセンス
 
-Body:
-{
-  "sessionId": "unique-session-id",
-  "input": "処理したいテキストまたはオブジェクト",
-  "meta": {
-    "userId": "user123",
-    "sourceFile": "example.txt"
-  }
-}
+**[MIT License](LICENSE)** - 商用利用・修正・配布可能
 
-Response:
-{
-  "sessionId": "unique-session-id",
-  "output": "処理結果",
-  "tokenUsage": {
-    "promptTokens": 100,
-    "completionTokens": 50,
-    "totalTokens": 150
-  },
-  "latencyMs": 250,
-  "agent": "SampleAgent"
-}
-```
+---
 
-## 📊 ログ形式
-
-すべてのログはJSON形式で標準出力に出力されます：
-
-```json
-{
-  "timestamp": "2025-07-03T12:00:00Z",
-  "sessionId": "abc-123",
-  "agent": "SampleAgent",
-  "inputLength": 234,
-  "outputLength": 112,
-  "latencyMs": 1400,
-  "tokenUsage": {
-    "promptTokens": 200,
-    "completionTokens": 100,
-    "totalTokens": 300
-  },
-  "error": null,
-  "logStage": "processed"
-}
-```
-
-## 🏗️ アーキテクチャ
-
-- **BaseAgent**: エージェントの基底クラス
-- **SampleAgent**: サンプル実装（スタブ）
-- **認証**: X-API-KEYヘッダーによる認証
-- **バリデーション**: Joiによる入力検証
-- **ログ**: Winstonによる構造化ログ
-
-## 🔧 拡張方法
-
-新しいエージェントを追加する場合：
-
-1. `src/agents/`に新しいエージェントクラスを作成
-2. `BaseAgent`を継承
-3. `processInput`メソッドを実装
-4. `src/index.ts`でエージェントをインスタンス化
-
-```typescript
-import { BaseAgent } from './baseAgent';
-import { MCPInput, MCPOutput } from '../types';
-
-export class MyAgent extends BaseAgent {
-  constructor() {
-    super('MyAgent');
-  }
-
-  async processInput(input: MCPInput): Promise<MCPOutput> {
-    // 実装
-  }
-}
-```
+**⭐ 役に立ったらスターをお願いします！**
