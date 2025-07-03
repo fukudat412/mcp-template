@@ -212,4 +212,4 @@ const paperInput = {
 
 ---
 
-**[← 戻る](../README.md)** | **[次のサンプル: Classify Agent →](../classify-agent/)**
+**[← 戻る](../README.md)** | **[メインテンプレート →](../../)**

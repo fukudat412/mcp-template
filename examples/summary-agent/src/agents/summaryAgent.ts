@@ -1,5 +1,5 @@
-import { BaseAgent } from '../../../../src/agents/baseAgent';
-import { MCPInput, MCPOutput } from '../../../../src/types';
+import { BaseAgent } from '../../../src/agents/baseAgent';
+import { MCPInput, MCPOutput } from '../../../src/types';
 import OpenAI from 'openai';
 
 interface SummaryMeta {

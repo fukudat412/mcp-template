@@ -8,16 +8,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Template UI components for log visualization and agent execution
-- GitHub Pages documentation hosting
-- Additional example agents (classify, structure)
+- Template UI components for log visualization and agent execution (planned)
 
 ### Changed
-- Performance optimizations for large document processing
-- Enhanced error handling and logging
+- Performance optimizations for large document processing (planned)
 
 ### Fixed
-- Minor bug fixes in cookiecutter template generation
+- Minor improvements and optimizations (ongoing)
+
+## [1.2.0] - 2025-07-03
+
+### Breaking Changes
+- **Removed cookiecutter support** to eliminate code duplication and complexity
+- **Simplified project structure** for better maintainability
+
+### Added
+- **Examples directory** with practical Summary Agent implementation
+- **CHANGELOG.md** for version management and release tracking
+- **Comprehensive documentation structure** in `docs/` directory
+- **GitHub Pages workflow** for automatic documentation publishing
+- **Template initialization script** with security improvements
+
+### Changed
+- **README.md restructured** - More concise and focused
+- **Removed redundant template options** for simpler developer experience
+- **Enhanced create-mcp-agent script** with proper security (crypto.randomBytes)
+- **Simplified package.json** removed unnecessary bin configuration
+
+### Removed
+- **Cookiecutter template** ({{cookiecutter.project_slug}}/ directory)
+- **Incomplete example agents** (classify-agent, structure-agent)
+- **Complex configuration options** that caused maintenance overhead
+
+### Fixed
+- **Security vulnerability** in API key generation
+- **Import path issues** in example implementations
+- **Documentation redundancy** and maintenance burden
+
+### Performance
+- **Reduced project size** by eliminating duplicate files
+- **Faster setup process** with streamlined options
 
 ## [1.1.0] - 2025-07-03
 

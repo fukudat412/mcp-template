@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const crypto = require('crypto');
 
 // Colors for console output
 const colors = {
@@ -37,7 +38,7 @@ async function createMcpAgent() {
   log(colors.bold + colors.blue, '🚀 MCP Agent Creator');
   console.log();
 
-  // Get project details
+  // Get basic project details
   const projectName = await prompt('プロジェクト名を入力してください: ');
   if (!projectName) {
     log(colors.red, 'プロジェクト名は必須です');
@@ -45,7 +46,6 @@ async function createMcpAgent() {
   }
 
   const description = await prompt('プロジェクトの説明を入力してください: ') || 'MCP Agent Service';
-  const agentName = await prompt('エージェント名を入力してください (例: SummaryAgent): ') || 'CustomAgent';
   const authorName = await prompt('作成者名を入力してください: ') || 'Your Name';
   const authorEmail = await prompt('作成者のメールアドレスを入力してください: ') || 'your.email@example.com';
 
@@ -72,6 +72,18 @@ async function createMcpAgent() {
       fs.rmSync('.git', { recursive: true, force: true });
     }
 
+    // Remove examples and docs to simplify
+    log(colors.blue, '不要なファイルを削除中...');
+    if (fs.existsSync('examples')) {
+      fs.rmSync('examples', { recursive: true, force: true });
+    }
+    if (fs.existsSync('scripts')) {
+      fs.rmSync('scripts', { recursive: true, force: true });
+    }
+    if (fs.existsSync('.github/workflows/pages.yml')) {
+      fs.rmSync('.github/workflows/pages.yml', { force: true });
+    }
+
     // Update package.json
     log(colors.blue, 'package.json を更新中...');
     const packageJsonPath = path.join(projectDir, 'package.json');
@@ -80,17 +92,18 @@ async function createMcpAgent() {
     packageJson.name = projectName;
     packageJson.description = description;
     packageJson.author = `${authorName} <${authorEmail}>`;
-    packageJson.repository.url = `git+https://github.com/${authorName}/${projectName}.git`;
-    packageJson.bugs.url = `https://github.com/${authorName}/${projectName}/issues`;
-    packageJson.homepage = `https://github.com/${authorName}/${projectName}#readme`;
+    
+    // Remove bin section
+    delete packageJson.bin;
+    
+    // Update repository info if provided
+    if (authorName !== 'Your Name') {
+      packageJson.repository.url = `git+https://github.com/${authorName}/${projectName}.git`;
+      packageJson.bugs.url = `https://github.com/${authorName}/${projectName}/issues`;
+      packageJson.homepage = `https://github.com/${authorName}/${projectName}#readme`;
+    }
 
     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
-
-    // Create custom agent
-    if (agentName !== 'SampleAgent') {
-      log(colors.blue, `カスタムエージェント ${agentName} を作成中...`);
-      createCustomAgent(agentName);
-    }
 
     // Create .env file
     log(colors.blue, '.env ファイルを作成中...');
@@ -131,95 +144,14 @@ NODE_ENV=development
     log(colors.yellow, '動作確認:');
     log(colors.blue, '  curl http://localhost:3000/health');
     console.log();
-    log(colors.yellow, 'ドキュメント:');
-    log(colors.blue, '  README.md - プロジェクト概要');
-    log(colors.blue, '  CLAUDE.md - 開発ガイド');
-    log(colors.blue, '  CONTRIBUTING.md - 貢献ガイド');
+    log(colors.yellow, 'カスタマイズ:');
+    log(colors.blue, '  src/agents/sampleAgent.ts - エージェントロジック');
+    log(colors.blue, '  docs/ - 詳細なドキュメント');
 
   } catch (error) {
     log(colors.red, `エラー: ${error.message}`);
     process.exit(1);
   }
-}
-
-function createCustomAgent(agentName) {
-  const agentPath = path.join('src', 'agents', `${agentName.toLowerCase()}.ts`);
-  const agentContent = `import { BaseAgent } from './baseAgent';
-import { MCPInput, MCPOutput } from '../types';
-
-export class ${agentName} extends BaseAgent {
-  constructor() {
-    super('${agentName}');
-  }
-
-  async processInput(input: MCPInput): Promise<MCPOutput> {
-    // TODO: カスタム処理を実装してください
-    // 例: LLM API呼び出し、データ処理、外部API連携など
-    
-    const processedOutput = typeof input.input === 'string' 
-      ? \`\${input.input}_processed_by_\${this.agentName}\`
-      : { ...input.input, processedBy: this.agentName };
-
-    return {
-      sessionId: input.sessionId,
-      output: processedOutput,
-      tokenUsage: {
-        promptTokens: 0,  // LLM使用時に実際の値を設定
-        completionTokens: 0,
-        totalTokens: 0
-      },
-      latencyMs: 0, // BaseAgentが自動設定
-      agent: this.agentName
-    };
-  }
-}
-`;
-
-  fs.writeFileSync(agentPath, agentContent);
-
-  // Update index.ts to include new agent
-  const indexPath = path.join('src', 'index.ts');
-  let indexContent = fs.readFileSync(indexPath, 'utf8');
-  
-  // Add import
-  const importLine = `import { ${agentName} } from './agents/${agentName.toLowerCase()}';`;
-  indexContent = indexContent.replace(
-    "import { SampleAgent } from './agents/sampleAgent';",
-    `import { SampleAgent } from './agents/sampleAgent';\n${importLine}`
-  );
-
-  // Add agent instance
-  const instanceLine = `const ${agentName.toLowerCase()} = new ${agentName}();`;
-  indexContent = indexContent.replace(
-    'const sampleAgent = new SampleAgent();',
-    `const sampleAgent = new SampleAgent();\n${instanceLine}`
-  );
-
-  // Add endpoint
-  const endpointCode = `
-// ${agentName} endpoint
-app.post('/${agentName.toLowerCase()}-process', authenticateApiKey, validateInput, async (req: Request, res: Response) => {
-  const input: MCPInput = req.body;
-
-  try {
-    const output = await ${agentName.toLowerCase()}.execute(input);
-    res.json(output);
-  } catch (error) {
-    logger.error('Processing error:', error);
-    res.status(500).json({
-      error: 'Processing failed',
-      message: error instanceof Error ? error.message : 'Unknown error'
-    });
-  }
-});
-`;
-
-  indexContent = indexContent.replace(
-    '// Main processing endpoint',
-    `// Main processing endpoint${endpointCode}`
-  );
-
-  fs.writeFileSync(indexPath, indexContent);
 }
 
 function updateReadme(projectName, description) {
@@ -240,9 +172,8 @@ function updateReadme(projectName, description) {
 }
 
 function generateApiKey() {
-  return Array.from(crypto.getRandomValues(new Uint8Array(32)))
-    .map(b => b.toString(16).padStart(2, '0'))
-    .join('');
+  // Secure random key generation
+  return crypto.randomBytes(32).toString('hex');
 }
 
 // Execute

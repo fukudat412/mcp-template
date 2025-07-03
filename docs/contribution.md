@@ -108,7 +108,6 @@ npm run lint
 ### 優先度中
 
 - [ ] READMEの英文化
-- [ ] cookiecutter対応
 - [ ] ログ可視化ダッシュボード
 - [ ] Webhook対応強化
 

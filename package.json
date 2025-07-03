@@ -1,6 +1,6 @@
 {
   "name": "mcp-agent",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "MCP Agent Service",
   "main": "dist/index.js",
   "repository": {
@@ -14,17 +14,13 @@
   "license": "MIT",
   "keywords": ["mcp", "agent", "ai", "microservice", "template"],
   "author": "Your Name <your.email@example.com>",
-  "bin": {
-    "create-mcp-agent": "./scripts/create-mcp-agent.js"
-  },
   "scripts": {
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "test": "jest",
     "lint": "eslint src/**/*.ts",
-    "typecheck": "tsc --noEmit",
-    "create-agent": "node scripts/create-mcp-agent.js"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "express": "^4.18.2",

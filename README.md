@@ -37,7 +37,7 @@ curl http://localhost:3000/health
 
 **他の方法:**
 - 🌟 GitHub Template機能で新規リポジトリ作成
-- 🛠️ 初期化スクリプト: `npx create-mcp-agent`
+- 🛠️ 初期化スクリプト: `node scripts/create-mcp-agent.js`
 
 ## 📚 ドキュメント
 

@@ -32,13 +32,10 @@ curl http://localhost:3000/health
 ### 方法3: 初期化スクリプトを使用
 
 ```bash
-# NPMパッケージとしてインストール
-npm install -g mcp-agent
-
-# 新しいプロジェクトを作成
-create-mcp-agent
-# または
-npx create-mcp-agent
+# リポジトリをクローンしてスクリプト実行
+git clone https://github.com/fukudat412/mcp-template.git
+cd mcp-template
+node scripts/create-mcp-agent.js
 ```
 
 ## 🏃‍♂️ 実行方法

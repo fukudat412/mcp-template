@@ -7,8 +7,8 @@
 | 🤖 エージェント | 📝 説明 | 🔗 リンク |
 |-------------|--------|--------|
 | **Summary Agent** | テキスト・PDF要約エージェント | [📁 summary-agent/](summary-agent/) |
-| **Classify Agent** | テキスト分類・カテゴリ判定エージェント | [📁 classify-agent/](classify-agent/) |
-| **Structure Agent** | 非構造化データの構造化エージェント | [📁 structure-agent/](structure-agent/) |
+
+> **Note**: 他のエージェント例は将来のバージョンで追加予定です。
 
 ## 🚀 使用方法
 
